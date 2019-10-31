@@ -2,7 +2,7 @@
   <div class="content">
     <button class="add-to-cart" @click="addToCart">Add To Cart</button>
     <div class="top-row">
-      <div class="top part">
+      <div class="" :class="[saleBorderClass, 'top', 'part']">
         <div class="robot-name">
             {{selectedRobot.head.title}}
             <span v-show="selectedRobot.head.onSale" class="sale"> Sale!</span>
@@ -40,15 +40,15 @@
         <h1>Cart</h1>
         <table>
             <thead>
-                <tr>
-                    <th>Robot</th>
-                    <th class="cost">Cost</th>
-                </tr>
+              <tr>
+                <th>Robot</th>
+                <th class="cost">Cost</th>
+              </tr>
             </thead>
             <tbody>
                 <tr v-for="(robot, index) in cart" :key="index">
-                    <td>{{robot.head.title}}</td>
-                    <td class="cost">{{robot.cost}}</td>
+                  <td>{{robot.head.title}}</td>
+                  <td class="cost">{{robot.cost}}</td>
                 </tr>
             </tbody>
         </table>
@@ -71,6 +71,9 @@ function getPreviousValidIndex(index, length) {
 
 export default {
   name: 'RobotBuilder',
+  created() {
+    console.log('create component!');
+  },
   data() {
     return {
       parts,
@@ -124,6 +127,9 @@ export default {
     },
   },
   computed: {
+    saleBorderClass() {
+      return this.selectedRobot.head.onSale ? 'sale-border' : '';
+    },
     selectedRobot() {
       return {
         head: parts.heads[this.selectedHeadIndex],
@@ -139,13 +145,13 @@ export default {
 
 <style scoped>
     .part {
-    position: relative;
-    width:165px;
-    height:165px;
-    border: 3px solid #aaa;
+      position: relative;
+      width:165px;
+      height:165px;
+      border: 3px solid #aaa;
     }
     .part img {
-    width:165px;
+      width:165px;
     }
     .top-row {
     display:flex;
@@ -252,5 +258,8 @@ export default {
     }
     .cost {
         text-align: right;
+    }
+    .sale-border {
+      border: 3px solid red;
     }
 </style>
