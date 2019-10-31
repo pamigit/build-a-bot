@@ -58,6 +58,7 @@
 
 <script>
 import parts from '../data/parts';
+import createdHookMixins from './created-hook-mixins';
 
 function getNextValidIndex(index, length) {
   const incrementedIndex = index + 1;
@@ -71,9 +72,7 @@ function getPreviousValidIndex(index, length) {
 
 export default {
   name: 'RobotBuilder',
-  created() {
-    console.log('create component!');
-  },
+  mixins: [createdHookMixins],
   data() {
     return {
       parts,
