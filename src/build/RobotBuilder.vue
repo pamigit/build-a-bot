@@ -1,20 +1,42 @@
 <template>
   <div class="content">
-    <button class="add-to-cart" @click="addToCart">Add To Cart</button>
+    <div class="preview">
+      <div class="preview-content">
+        <CollapsibleSection>
+          <div class="top-row">
+            <img :src="selectedRobot.head.src"/>
+          </div>
+          <div class="middle-row">
+            <img :src="selectedRobot.leftArm.src" class="rotate-left"/>
+            <img :src="selectedRobot.torso.src"/>
+            <img :src="selectedRobot.rightArm.src" class="rotate-right"/>
+          </div>
+          <div class="bottom-row">
+            <img :src="selectedRobot.base.src"/>
+          </div>
+        </CollapsibleSection>
+      </div>
+      <button class="add-to-cart" @click="addToCart">Add To Cart</button>
+    </div>
     <div class="top-row">
         <!--<div class="robot-name">
             {{selectedRobot.head.title}}
             <span v-show="selectedRobot.head.onSale" class="sale"> Sale!</span>
         </div>-->
-        <partSelector :parts="parts.heads" position="top" />
+        <partSelector :parts="parts.heads" position="top"
+          @partSelected="part => selectedRobot.head = part" />
     </div>
     <div class="middle-row">
-      <partSelector :parts="parts.arms" position="left" />
-      <partSelector :parts="parts.torsos" position="center" />
-      <partSelector :parts="parts.arms" position="right" />
+      <partSelector :parts="parts.arms" position="left"
+        @partSelected="part => selectedRobot.leftArm = part" />
+      <partSelector :parts="parts.torsos" position="center"
+        @partSelected="part => selectedRobot.torso = part" />
+      <partSelector :parts="parts.arms" position="right"
+        @partSelected="part => selectedRobot.rightArm = part" />
     </div>
     <div class="bottom-row">
-      <partSelector :parts="parts.bases" position="bottom" />
+      <partSelector :parts="parts.bases" position="bottom"
+        @partSelected="part => selectedRobot.base = part" />
     </div>
     <div>
         <h1>Cart</h1>
@@ -40,12 +62,14 @@
 import parts from '../data/parts';
 import createdHookMixins from './created-hook-mixins';
 import partSelector from './partSelector.vue';
+import CollapsibleSection from '../share/CollapsibleSection.vue';
 
 export default {
   name: 'RobotBuilder',
   mixins: [createdHookMixins],
   components: {
     partSelector,
+    CollapsibleSection,
   },
   data() {
     return {
@@ -182,8 +206,7 @@ export default {
     }
     .add-to-cart {
         position: absolute;
-        right: 30px;
-        width: 220px;
+        width: 210px;
         padding: 3px;
         font-size: 16px;
     }
@@ -197,5 +220,26 @@ export default {
     }
     .sale-border {
       border: 3px solid red;
+    }
+    .preview {
+      position: absolute;
+      top: -20px;
+      right: 0;
+      width: 210px;
+      height: 210px;
+      padding: 5px;
+    }
+    .preview-content {
+      border: 1px solid #999;
+    }
+    .preview img {
+      width: 50px;
+      height: 50px;
+    }
+    .rotate-right {
+      transform: rotate(90deg);
+    }
+    .rotate-left {
+      transform: rotate(-90deg);
     }
 </style>

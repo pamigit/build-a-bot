@@ -43,7 +43,16 @@ export default {
       return this.parts[this.selectedPartIndex];
     },
   },
+  created() {
+    this.emitPartSelected();
+  },
+  updated() {
+    this.emitPartSelected();
+  },
   methods: {
+    emitPartSelected() {
+      this.$emit('partSelected', this.selectedPart);
+    },
     selectNextPart() {
       this.selectedPartIndex = getNextValidIndex(
         this.selectedPartIndex,
