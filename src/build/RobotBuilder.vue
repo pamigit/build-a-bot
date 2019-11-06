@@ -71,9 +71,19 @@ export default {
     partSelector,
     CollapsibleSection,
   },
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) {
+      next(true);
+    } else {
+      /* eslint no-alert: 0 */
+      /* eslint no-restricted-globals: 0 */
+      next(confirm('You have not added a robot to your cart, are you sure you want to leave?'));
+    }
+  },
   data() {
     return {
       parts,
+      addedToCart: false,
       cart: [],
       selectedRobot: {
         head: {},
@@ -93,6 +103,7 @@ export default {
         + robot.torso.cost
         + robot.base.cost;
       this.cart.push(Object.assign({}, robot, { cost }));
+      this.addedToCart = true;
     },
   },
   computed: {
