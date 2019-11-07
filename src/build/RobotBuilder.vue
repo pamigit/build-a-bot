@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div v-if="parts" class="content">
     <div class="preview">
       <div class="preview-content">
         <CollapsibleSection>
@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import parts from '../data/parts';
 import createdHookMixins from './created-hook-mixins';
 import partSelector from './partSelector.vue';
 import CollapsibleSection from '../share/CollapsibleSection.vue';
@@ -53,6 +52,9 @@ export default {
   components: {
     partSelector,
     CollapsibleSection,
+  },
+  created() {
+    this.$store.dispatch('getParts');
   },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
@@ -65,7 +67,6 @@ export default {
   },
   data() {
     return {
-      parts,
       addedToCart: false,
       cart: [],
       selectedRobot: {
@@ -90,6 +91,9 @@ export default {
     },
   },
   computed: {
+    parts() {
+      return this.$store.state.parts;
+    },
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
     },
