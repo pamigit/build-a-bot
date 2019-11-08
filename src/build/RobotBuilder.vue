@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 import createdHookMixins from './created-hook-mixins';
 import partSelector from './partSelector.vue';
 import CollapsibleSection from '../share/CollapsibleSection.vue';
@@ -54,7 +56,7 @@ export default {
     CollapsibleSection,
   },
   created() {
-    this.$store.dispatch('getParts');
+    this.getParts();
   },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
@@ -79,6 +81,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions('robots', ['getParts', 'addRobotToCartAction']),
     addToCart() {
       const robot = this.selectedRobot;
       const cost = robot.head.cost
@@ -86,14 +89,14 @@ export default {
         + robot.rightArm.cost
         + robot.torso.cost
         + robot.base.cost;
-      this.$store.dispatch('addRobotToCartAction', Object.assign({}, robot, { cost }))
+      this.addRobotToCartAction(Object.assign({}, robot, { cost }))
         .then(() => this.$router.push('/cart'));
       this.addedToCart = true;
     },
   },
   computed: {
     parts() {
-      return this.$store.state.parts;
+      return this.$store.state.robots.parts;
     },
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
