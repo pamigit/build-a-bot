@@ -18,7 +18,7 @@
             {{robot.head.title}}
           </td>
           <td class="cost">
-            {{robot.cost}}
+            {{robot.cost | currency('$')}}
           </td>
         </tr>
       </tbody>
@@ -41,7 +41,7 @@
             {{robot.head.title}}
           </td>
           <td class="cost">
-            {{robot.cost}}
+            {{robot.cost | currency('$')}}
           </td>
         </tr>
       </tbody>
@@ -50,8 +50,12 @@
 </template>
 
 <script>
+// --local filter--
+// import currencyFilter from '../share/currency-filter';
+
 export default {
   name: 'Cart',
+  // filters: { currency: currencyFilter },
   computed: {
     cart() {
       return this.$store.state.robots.cart;
